@@ -11,9 +11,9 @@ const firebaseConfig = {
   apiKey: process.env.FIREBASE_API,
   authDomain: process.env.FIREBASE_AUTHDOMAIN,
   projectId: process.env.FIREBASE_PROJECTAPI,
-  storageBucket: FIREBASE_STORAGEBUCKET,
-  messagingSenderId: FIREBASE_MESSAGINGSENDERID,
-  appId: FIREBASE_APPID
+  storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.FIREBASE_APPID
 };
 
 // Initialize Firebase
