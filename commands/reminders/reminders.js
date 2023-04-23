@@ -37,16 +37,16 @@ module.exports = {
         {
             if(remPeriodM != null)
             {
-                await interaction.reply(`${remPeriodH} hours ${remPeriodM} minutes reminder added for task ${task}!`);
+                await interaction.reply(`Reminder for every ${remPeriodH} hours ${remPeriodM} minutes added for ${task}!`);
             }
             else
             {
-                await interaction.reply(`${remPeriodH} hours reminder added for task ${task}!`);
+                await interaction.reply(`Reminder for every ${remPeriodH} hours added for ${task}!`);
             }
         }
         else if(remPeriodM != null)
         {
-            await interaction.reply(`${remPeriodM} minutes reminder added for task ${task}!`);
+            await interaction.reply(`Reminder for every ${remPeriodM} minutes added for task ${task}!`);
         }
         
         const remPeriodT = 1000*60*60*remPeriodH + 1000*60*remPeriodM;
