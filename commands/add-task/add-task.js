@@ -49,7 +49,8 @@ module.exports = {
                 userID: userID,
                 value: list,
                 deadline: deadline,
-                reminder: -1
+                reminderHour: -1,
+                reminderMinute: -1
             }
             );
 
