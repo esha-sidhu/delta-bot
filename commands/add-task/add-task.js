@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const {addDoc, collection, getDocs, query, where, updateDoc, getFirestore, doc} = require('firebase/firestore');
-const {database, author} = require('../../firebase');
+const {addDoc, collection, getDocs, query, where, updateDoc, doc} = require('firebase/firestore');
+const {database} = require('../../firebase');
 
 module.exports = {
 	data: new SlashCommandBuilder()
