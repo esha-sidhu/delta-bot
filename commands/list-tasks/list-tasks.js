@@ -33,5 +33,12 @@ module.exports = {
                 .setDescription(`${allTasksStr}`)
             await interaction.reply({embeds: [listEmbed]});
         }
+        else
+        {
+            const listEmbed = new EmbedBuilder()
+                .setTitle("Your todo list")
+                .setDescription("No tasks to complete!")
+            await interaction.reply({embeds: [listEmbed]});
+        }
 	},
 };
