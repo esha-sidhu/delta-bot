@@ -39,27 +39,75 @@ module.exports = {
 	async execute(interaction) {
         const user = interaction.user.username;
         const userID = interaction.user.id;
-        const task = interaction.options.getString('task');
+        const taskName = interaction.options.getString('task');
         const deadline = new Date(interaction.options.getInteger('year'), interaction.options.getInteger('month') - 1, interaction.options.getInteger('day'), interaction.options.getInteger('hour'), interaction.options.getInteger('minute'));
-        if (deadline === deadline)
+        const deadlineStr = deadline.toString();
+        const listQ = query(collection(database, "taskListData"), where("userID", "==", userID));
+        const listQRes = await getDocs(listQ);
+        if (listQRes.docs.length !== 0)
         {
-            let list = [];
-            list.push(task);
-            await addDoc (collection(database, "taskListData"), {
-                userID: userID,
-                value: list,
-                deadline: deadline,
-                reminderHour: -1,
-                reminderMinute: -1
-            }
-            );
+            console.log("user found");
+            const ID = listQRes.docs[0].id;
+            const docToUpdate = doc(database, "taskListData", ID);
+            let tempTask = listQRes.docs[0]._document.data.value.mapValue.fields.task.arrayValue.values;
+            let tempDeadline = listQRes.docs[0]._document.data.value.mapValue.fields.deadline.arrayValue.values;
+            let tempHour = listQRes.docs[0]._document.data.value.mapValue.fields.reminderHour.arrayValue.values;
+            let tempMin = listQRes.docs[0]._document.data.value.mapValue.fields.reminderMinute.arrayValue.values;
 
-            await interaction.reply(`${user} added "${task}" to their todo list\nDeadline: ${deadline}`);
-            console.log(`${userID} added "${task}" to their todo list`);
+            let taskList = [];
+            let lenT = tempTask.length;
+            for (let i = 0; i < lenT; i++)
+            {
+                taskList.push(tempTask[i].stringValue);
+            }
+
+            let deadlineList = [];
+            for (let i = 0; i < lenT; i++)
+            {
+                deadlineList.push(tempDeadline[i].stringValue);
+            }
+
+            let hourList = [];
+            for (let i = 0; i < lenT; i++)
+            {
+                hourList.push(tempHour[i].stringValue);
+            }
+
+            let minList = [];
+            for (let i = 0; i < lenT; i++)
+            {
+                minList.push(tempMin[i].stringValue);
+            }
+
+            taskList.push(taskName);
+            deadlineList.push(deadlineStr);
+            hourList.push("-1");
+            minList.push("-1");
+
+            // console.log(docToUpdate);
+            await updateDoc(docToUpdate, {task: taskList, deadline: deadlineList, reminderHour: hourList, reminderMinute: minList});
         }
         else
         {
-            await interaction.reply("Invalid date");
+            let taskList = [];
+            let deadlineList = [];
+            let hourList = [];
+            let minList = [];
+            taskList.push(taskName);
+            deadlineList.push(deadlineStr);
+            hourList.push("-1");
+            minList.push("-1");
+            await addDoc (collection(database, "taskListData"), {
+                userID: userID,
+                task: taskList,
+                deadline: deadlineList,
+                reminderHour: hourList,
+                reminderMinute: minList
+            }
+            );
         }
+
+        await interaction.reply(`${user} added "${taskName}" to their todo list\nDeadline: ${deadline}`);
+        console.log(`${userID} added "${taskName}" to their todo list`);
 	},
 };
